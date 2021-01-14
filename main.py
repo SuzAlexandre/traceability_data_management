@@ -77,25 +77,29 @@ def read_SO_numbers(conn):
 
     return SO_numbers
 
-def generate_serial_numbers(quantity,duration):
+def generate_serial_numbers(plant, caster_list, SO_numbers_list, quantity,duration,):
     base_time=datetime.datetime.today()
     date_list=[]
 
-    # Loop on date list
+    # Loop on quantities
     for cmp in range(quantity):
-        date_list.append(base_time-datetime.timedelta(seconds=random.randrange(0,duration*24*3600)))
-        date
+        new_date=base_time#-datetime.timedelta(seconds=random.randrange(0,duration*24*3600))
+        date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)}
+        # single_record={'date': new_date, 'date_string': date_string}
+        
+        # generate random serial numbers
+        serial_number=plant + random.choice[caster_list]+random.choice[SO_numbers_list]+date_string
 
-    print(date_list)
-
+        date_list.append(single_record)
+    
+    return date_list
 
 # create database connection
 conn = pyodbc.connect(
     "Driver={SQL Server Native Client 11.0};"
     "Server=10.41.32.4;"
     "Database=SZ_001;"
-    "Trusted_Connection=yes;"
-)
+    "Trusted_Connection=yes;")
 
 # getting the caster list from database
 caster_list = read_caster_list(conn)
@@ -106,7 +110,9 @@ caster_list = read_caster_list(conn)
 # getting SO number list from the database
 SO_numbers = read_SO_numbers(conn)
 
+#getting setil 
+
 # generate random part number in time range
-generate_serial_numbers(100,365)
+generate_serial_numbers(5,365) #quantity and duration in days
 
 conn.close()
