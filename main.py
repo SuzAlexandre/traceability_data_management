@@ -84,7 +84,7 @@ def generate_serial_numbers(plant, caster_list, SO_numbers_list, quantity,durati
     # Loop on quantities
     for cmp in range(quantity):
         new_date=base_time#-datetime.timedelta(seconds=random.randrange(0,duration*24*3600))
-        date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)}
+        date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)
         # single_record={'date': new_date, 'date_string': date_string}
         
         # generate random serial numbers
