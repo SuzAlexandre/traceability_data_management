@@ -83,16 +83,26 @@ def generate_serial_numbers(plant, caster_list, SO_numbers_list, quantity,durati
 
     # Loop on quantities
     for cmp in range(quantity):
-        new_date=base_time#-datetime.timedelta(seconds=random.randrange(0,duration*24*3600))
-        date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)}
-        # single_record={'date': new_date, 'date_string': date_string}
+        new_date=base_time-datetime.timedelta(seconds=random.randrange(0,duration*24*3600))
+        date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)
         
         # generate random serial numbers
-        serial_number=plant + random.choice[caster_list]+random.choice[SO_numbers_list]+date_string
-
-        date_list.append(single_record)
+        serial_number= plant + random.choice(caster_list) + '{0:02d}'.format(random.choice(SO_numbers_list)) + date_string
+        
+        # Append the list
+        date_list.append({'date': new_date, 'serial_number': serial_number})
     
     return date_list
+
+def push_serial_number(conn, serial_numbers):
+    # setup cursor
+    cursor=conn.cursor()
+
+    for serial_number in serial_numbers:
+        cursor.execute("insert into part_serial_numbers(serial_number,register_time) values (?,?)",serial_number.get('serial_number'),serial_number.get('date'))
+        conn.commit()
+
+
 
 # create database connection
 conn = pyodbc.connect(
@@ -110,9 +120,12 @@ caster_list = read_caster_list(conn)
 # getting SO number list from the database
 SO_numbers = read_SO_numbers(conn)
 
-#getting setil 
-
 # generate random part number in time range
-generate_serial_numbers(5,365) #quantity and duration in days
+serial_numbers = generate_serial_numbers(plant,caster_list,SO_numbers,100000,365) #quantity and duration in days
+print('All numbers generated')
+
+# move data to database
+push_serial_number(conn, serial_numbers)
+print('All set')
 
 conn.close()
