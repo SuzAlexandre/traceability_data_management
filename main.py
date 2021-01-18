@@ -83,15 +83,10 @@ def generate_serial_numbers(plant, caster_list, SO_numbers_list, quantity,durati
 
     # Loop on quantities
     for cmp in range(quantity):
-<<<<<<< HEAD
+
         new_date=base_time-datetime.timedelta(seconds=random.randrange(0,duration*24*3600))
         date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)
-=======
-        new_date=base_time#-datetime.timedelta(seconds=random.randrange(0,duration*24*3600))
-        date_string = '{0:02d}'.format(new_date.year)[2:4] +'{0:02d}'.format(new_date.month)+'{0:02d}'.format(new_date.day)+'{0:02d}'.format(new_date.hour)+'{0:02d}'.format(new_date.minute)+'{0:02d}'.format(new_date.second)
-        # single_record={'date': new_date, 'date_string': date_string}
->>>>>>> 4c2d14af75294fd5595f1b5d95ddd41f58f7dab5
-        
+         
         # generate random serial numbers
         serial_number= plant + random.choice(caster_list) + '{0:02d}'.format(random.choice(SO_numbers_list)) + date_string
         
@@ -120,14 +115,14 @@ conn = pyodbc.connect(
 # getting the caster list from database
 caster_list = read_caster_list(conn)
 
-# generate_SO_number(conn,1000) -- Activate only once
+# generate_SO_number(conn,10) -- Activate only once
 # generating SO numbers
 
 # getting SO number list from the database
 SO_numbers = read_SO_numbers(conn)
 
 # generate random part number in time range
-serial_numbers = generate_serial_numbers(plant,caster_list,SO_numbers,100000,365) #quantity and duration in days
+serial_numbers = generate_serial_numbers(plant,caster_list,SO_numbers,10,365) #quantity and duration in days
 print('All numbers generated')
 
 # move data to database
